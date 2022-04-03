@@ -1,0 +1,18 @@
+(library
+ (name clear_url)
+ (modules clear_url)
+ (libraries bos fpath re uri yojson))
+
+(executable
+ (name updaterules)
+ (modules updaterules)
+ (libraries lwt lwt.unix cohttp-lwt cohttp-lwt-unix uri yojson))
+
+(rule
+ (target rules.json)
+ (deps updaterules.exe)
+ (mode promote)
+ (action
+  (with-stdout-to
+   rules.json
+   (run ./updaterules.exe))))
